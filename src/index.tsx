@@ -1,71 +1,52 @@
-import { Button, Frog, TextInput } from 'frog'
-import { devtools } from 'frog/dev'
-import { serveStatic } from 'frog/serve-static'
+import { Button, Frog } from 'frog';
+import { Box, Heading, VStack, vars } from './ui.js';
+import { devtools } from 'frog/dev';
+import { serveStatic } from 'frog/serve-static';
 // import { neynar } from 'frog/hubs'
 
 export const app = new Frog({
+  browserLocation: 'https://warframes.wtf/',
   // Supply a Hub to enable frame verification.
   // hub: neynar({ apiKey: 'NEYNAR_FROG_FM' })
-})
-
-app.frame('/', (c) => {
-  const { buttonValue, inputText, status } = c
-  const fruit = inputText || buttonValue
+  ui: { vars },
+}).frame('/', c => {
   return c.res({
+    action: '/logon',
     image: (
-      <div
-        style={{
-          alignItems: 'center',
-          background:
-            status === 'response'
-              ? 'linear-gradient(to right, #432889, #17101F)'
-              : 'black',
-          backgroundSize: '100% 100%',
-          display: 'flex',
-          flexDirection: 'column',
-          flexWrap: 'nowrap',
-          height: '100%',
-          justifyContent: 'center',
-          textAlign: 'center',
-          width: '100%',
-        }}
+      <Box
+        grow
+        alignHorizontal="center"
+        alignVertical="center"
+        backgroundColor="background"
+        borderColor="white"
+        borderWidth="6"
+        padding="32"
       >
-        <div
-          style={{
-            color: 'white',
-            fontSize: 60,
-            fontStyle: 'normal',
-            letterSpacing: '-0.025em',
-            lineHeight: 1.4,
-            marginTop: 30,
-            padding: '0 120px',
-            whiteSpace: 'pre-wrap',
-          }}
-        >
-          {status === 'response'
-            ? `Nice choice.${fruit ? ` ${fruit.toUpperCase()}!!` : ''}`
-            : 'Welcome!'}
-        </div>
-      </div>
+        <VStack>
+          <Heading size="64">Shall We Play a Frame?</Heading>
+        </VStack>
+      </Box>
     ),
     intents: [
-      <TextInput placeholder="Enter custom fruit..." />,
-      <Button value="apples">Apples</Button>,
-      <Button value="oranges">Oranges</Button>,
-      <Button value="bananas">Bananas</Button>,
-      status === 'response' && <Button.Reset>Reset</Button.Reset>,
-    ],
-  })
-})
+      <Button.Mint target="eip155:7777777:0x060f3edd18c47f59bd23d063bbeb9aa4a8fec6df:69420">
+        Mint
+      </Button.Mint>,
 
-const isCloudflareWorker = typeof caches !== 'undefined'
+      // Base eip155:8453
+      // Zora eip155:7777777
+      // https://github.com/WalletConnect/blockchain-api/blob/master/SUPPORTED_CHAINS.md
+    ],
+  });
+});
+
+const isCloudflareWorker = typeof caches !== 'undefined';
 if (isCloudflareWorker) {
-  const manifest = await import('__STATIC_CONTENT_MANIFEST')
-  const serveStaticOptions = { manifest, root: './' }
-  app.use('/*', serveStatic(serveStaticOptions))
-  devtools(app, { assetsPath: '/frog', serveStatic, serveStaticOptions })
+  const manifest = await import('__STATIC_CONTENT_MANIFEST');
+  const serveStaticOptions = { manifest, root: './' };
+  app.use('/*', serveStatic(serveStaticOptions));
+  devtools(app, { assetsPath: '/frog', serveStatic, serveStaticOptions });
 } else {
-  devtools(app, { serveStatic })
+  devtools(app, { serveStatic });
 }
 
-export default app
+export default app;
