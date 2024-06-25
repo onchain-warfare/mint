@@ -12,9 +12,9 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 contract TestWe is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Pausable, Ownable, ERC721Burnable {
     uint256 private _nextTokenId;
 
-    constructor(address initialOwner)
+    constructor()
         ERC721("Test We", "TEST")
-        Ownable(initialOwner)
+        Ownable(msg.sender)
     {}
 
     function _baseURI() internal pure override returns (string memory) {
@@ -29,7 +29,7 @@ contract TestWe is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Pausable, O
         _unpause();
     }
 
-    function safeMint(address to, string memory uri) public onlyOwner {
+    function safeMint(address to, string memory uri) public {
         uint256 tokenId = _nextTokenId++;
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, uri);
