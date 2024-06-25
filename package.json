@@ -1,5 +1,5 @@
 {
-  "name": "mint",
+  "name": "new-frog",
   "private": true,
   "type": "module",
   "scripts": {
@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "frog": "latest",
-    "hono": "^4.4.5"
+    "hono": "^4.4.8"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "latest",

@@ -5,6 +5,7 @@ import { serveStatic } from 'frog/serve-static';
 // import { neynar } from 'frog/hubs'
 
 export const app = new Frog({
+  title: 'WarFrames',
   browserLocation: 'https://warframes.wtf/',
   // Supply a Hub to enable frame verification.
   // hub: neynar({ apiKey: 'NEYNAR_FROG_FM' })
